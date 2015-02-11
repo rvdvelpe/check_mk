@@ -1,0 +1,36 @@
+#!/usr/bin/python
+# -*- encoding: utf-8; py-indent-offset: 4 -*-
+
+##Script used by check_mk to monitor the workqueue (mails that still needs to be processed)
+
+#OIDs used:
+#ASYNCOS-MAIL-MIB::workQueueMessages	.1.3.6.1.4.1.15497.1.1.1.11.0
+#SNMPv2-MIB::sysOID			.1.3.6.1.2.1.1.2.0
+
+#scan function check for ironport sepcific OID (.1.3.6.1.2.1.1.2.0)
+
+#Author: Ruud Vander Velpen
+
+workqueue_default_levels = (100, 500)
+
+def check_workqueue(item, params, info):
+	#unpack check parameter
+	warn, crit = params	
+	workqueue = saveint(info)
+	workqueuetext = "workqueue: %s" % workqueue
+	perfdata = [ ( "workqueue", workqueue, warn, crit ) ]
+	if workqueue >= crit:
+		return (2, "CRIT - " + workqueuetext, perfdata)
+	elif workqueue >= warn:
+		return (1, "WARN - " + workqueuetext, perfdata)
+	else:
+		return (0, "OK - " + workqueuetext, perfdata)
+
+check_info["workqueue"] = {
+	'check_function'        : check_workqueue,
+	'inventory_function'    : lambda info: [(None, "workqueue_default_levels")],
+	'service_description'   : "Workqueue",
+	'has_perfdata'          : True,
+	'snmp_scan_function'	: lambda oid: oid(".1.3.6.1.2.1.1.2.0").startswith(".1.3.6.1.4.1.15497."),
+	'snmp_info'             : ( ".1.3.6.1.4.1.15497.1.1.1.11", [ "0" ] ),	
+}
