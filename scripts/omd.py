@@ -42,7 +42,7 @@ logpath = '/home/local/ICA/rc01865a/scripts/omd/output/logs/'
 #prodcutie
 watopath = '/opt/omd/sites/telecom/etc/check_mk/conf.d/wato/'    
 autocheckpath = '/opt/omd/sites/telecom/var/check_mk/autochecks/'
-logpath = '/home/local/ICA/rc01865a/scripts/omd/output/logs/'
+logpath = '/home/local/ICA/rc01865a/output/'
 notespath = '/opt/omd/sites/telecom/etc/check_mk/notes/hosts/'
 
 
@@ -52,7 +52,9 @@ notespath = '/opt/omd/sites/telecom/etc/check_mk/notes/hosts/'
 
 def generateoutput(string):
 	global output
+	global outputhtml
 	output = output + string + '\n'
+	outputhtml = outputhtml + string + '<br>'
 	print(string)
 
 def getbmvdata():
@@ -537,6 +539,7 @@ def sendmail(output):
 
 gotostep = 1
 output = "START SCRIPT\n"
+outputhtml = "START SCRIPT<br>"
 mail = 0
 new_hosts = []
 delete_hosts = []
@@ -561,9 +564,9 @@ while gotostep != 'x' and gotostep != 's':
 		gotostep = 'x'
 
 if mail:
-	print("MAIL YES")
+	#print("MAIL YES")
 	timestr = time.strftime("%Y%m%d-%H%M%S")
 	logfile = open(logpath + timestr + "_omdimport.log", "w")
 	logfile.write(output)	
 	logfile.close
-	sendmail(output)
+	sendmail(outputhtml)
