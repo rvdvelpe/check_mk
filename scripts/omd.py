@@ -503,8 +503,7 @@ def checkautocheck(bmv):
 				f.close()
 				generateoutput("step 7.x: autocheck file %s.mk modified, added interface %s" % (name, interf))
 				global mail
-				mail = 1
-	
+				mail = 1	
 	generateoutput("step 7: checkautocheck COMPLETED")
 	
 def sendmail(output):
@@ -563,8 +562,7 @@ while gotostep != 'x' and gotostep != 's':
 		checkautocheck(d_object_processed)
 		gotostep = 'x'
 
-if mail:
-	#print("MAIL YES")
+if mail:	
 	timestr = time.strftime("%Y%m%d-%H%M%S")
 	logfile = open(logpath + timestr + "_omdimport.log", "w")
 	logfile.write(output)	
