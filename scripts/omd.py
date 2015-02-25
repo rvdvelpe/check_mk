@@ -10,6 +10,7 @@ import shutil				#module used to remove a folder which is not empty.
 import time
 import smtplib
 
+from subprocess import call
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -281,7 +282,7 @@ def checkobjects(bmv):
 	new_items = []
 	delete_items = []
 	
-	#Get the object in checkmk based on the watofolder (from bmv!)	
+	#Get the object in checkmk based on the watofolder (from bmv!)
 	for key in foldertree:
 		host_mk = watopath + foldertree[key] + "/hosts.mk"
 		if os.path.isfile(host_mk):
@@ -293,6 +294,7 @@ def checkobjects(bmv):
 						l_filenames1.append(filename)	
 
 	#Get the objects in checkmk based on the autocheckfolder
+	#We need this because we assume WATO wille be overwritten and we assume everything has a service. (This is overkill)
 	for root, dirs, files in os.walk(autocheckpath):
 		for filename in files:
 			searchObj = re.search("([a-zA-Z0-9_-]+)", filename, re.M|re.I)
@@ -568,3 +570,5 @@ if mail:
 	logfile.write(output)	
 	logfile.close
 	sendmail(outputhtml)
+	call(["cmk", "-R"])
+	
