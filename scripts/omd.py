@@ -61,7 +61,7 @@ def generateoutput(string):
 def getbmvdata():
 	generateoutput("step 1: getmbvdata STARTED")
 	#https://code.google.com/p/pypyodbc/wiki/PyPyODBC_Example_Tutorial
-	conn = pypyodbc.connect('Driver=FreeTDS;Server=172.20.5.42;port=1441;uid=OmdPTelecomSql;pwd=Omd@2014!!!;database=bmvd0001')
+	conn = pypyodbc.connect('Driver=FreeTDS;Server=172.20.5.42;port=1441;uid=OmdPTelecomSql;pwd=xxxxxxxxx;database=bmvd0001')
 	cur = conn.cursor()
 	cur.execute('''Select
     o.name as 'Object naam',
